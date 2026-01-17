@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmarterQueue - Social Media Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f4f8;
+      color: #1a2b3c;
+    }
+
+    /* Top Promo Banner */
+    .promo-banner {
+      background: linear-gradient(135deg, #2d8a6e 0%, #4a9f7e 50%, #7ab89a 100%);
+      color: white;
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 15px;
+    }
+
+    .promo-banner a {
+      color: white;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* What Best Describes You - Animated Section */
+    .persona-section {
+      background: linear-gradient(180deg, #e8f0e8 0%, #dce8dc 100%);
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.6s ease-out, opacity 0.4s ease-out, padding 0.6s ease-out;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .persona-section.visible {
+      max-height: 120px;
+      opacity: 1;
+      padding: 20px 60px 20px 20px;
+    }
+
+    .persona-section.hidden {
+      max-height: 0;
+      opacity: 0;
+      padding: 0 20px;
+    }
+
+    .persona-close {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #667085;
+      font-size: 24px;
+      transition: color 0.2s;
+    }
+
+    .persona-close:hover {
+      color: #344054;
+    }
+
+    .persona-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .persona-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .persona-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .persona-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: white;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #344054;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .persona-btn:hover {
+      border-color: #2d8a6e;
+      background: #f8fdf9;
+    }
+
+    .persona-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #667085;
+    }
+
+    /* Mobile Menu Button */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .menu-btn svg {
+      width: 28px;
+      height: 28px;
+      color: #1a2b3c;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .promo-banner {
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+
+      .persona-section.visible {
+        max-height: 280px;
+        padding: 20px 50px 20px 20px;
+      }
+
+      .persona-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .persona-title {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .persona-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .persona-btn {
+        justify-content: center;
+        padding: 14px 20px;
+      }
+
+      .persona-close {
+        top: 20px;
+        transform: none;
+      }
+
+      .header {
+        padding: 12px 20px;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .header-right .btn-login,
+      .header-right .btn-trial {
+        display: none;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .hero {
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 40px;
+      }
+
+      .hero-left {
+        padding-top: 0;
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .hero-description {
+        font-size: 16px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .trust-badges {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+
+      .hero-right {
+        max-width: 100%;
+      }
+
+      .calendar-mockup {
+        padding: 16px;
+      }
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a2b3c;
+    }
+
+    .logo span {
+      color: #2d8a6e;
+    }
+
+    .nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #4a5568;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .nav a:hover {
+      color: #2d8a6e;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-login {
+      padding: 10px 20px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+      font-weight: 500;
+      color: #344054;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-login:hover {
+      background: #f9fafb;
+    }
+
+    .btn-trial {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #1a2b3c;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-trial:hover {
+      background: #2c3e50;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 60px 40px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 60px;
+    }
+
+    .hero-left {
+      flex: 1;
+      max-width: 560px;
+      padding-top: 40px;
+    }
+
+    .hero-title {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: #1a2b3c;
+      margin-bottom: 24px;
+    }
+
+    .hero-description {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #4a5568;
+      margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: #2d8a6e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-cta:hover {
+      background: #257a5f;
+    }
+
+    .btn-video {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #2d8a6e;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .btn-video:hover {
+      color: #257a5f;
+    }
+
+    .play-icon {
+      width: 24px;
+      height: 24px;
+      background: #2d8a6e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-icon svg {
+      width: 10px;
+      height: 10px;
+      fill: white;
+      margin-left: 2px;
+    }
+
+    .trust-badges {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      color: #667085;
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-badge svg {
+      width: 16px;
+      height: 16px;
+      color: #2d8a6e;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+
+    .social-icon.facebook { background: #1877f2; }
+    .social-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .social-icon.twitter { background: #14171a; }
+    .social-icon.linkedin { background: #0077b5; }
+    .social-icon.pinterest { background: #e60023; }
+    .social-icon.tiktok { background: #000; }
+    .social-icon.google { background: #ea4335; }
+    .social-icon.youtube { background: #ff0000; }
+    .social-icon.threads { background: #000; }
+
+    /* Hero Right - Calendar Mockup */
+    .hero-right {
+      flex: 1;
+      max-width: 600px;
+    }
+
+    .calendar-mockup {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      position: relative;
+    }
+
+    .calendar-header {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .calendar-day {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #667085;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .calendar-cell {
+      aspect-ratio: 1;
+      position: relative;
+    }
+
+    .calendar-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .calendar-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .calendar-icons {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .platform-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Comment bubbles */
+    .comment-bubble {
+      position: absolute;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .comment-bubble.green {
+      background: #2d8a6e;
+      color: white;
+    }
+
+    .comment-bubble.blue {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .comment-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #ddd;
+    }
+
+    .bubble-1 {
+      top: 180px;
+      left: 80px;
+    }
+
+    .bubble-2 {
+      top: 320px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Promo Banner -->
+  <div class="promo-banner">
+    Join 50,000+ agencies using SmarterQueue | Special: 3 months free with annual plan &rarr; <a href="#">Get started</a>
+  </div>
+
+  <!-- What Best Describes You - Animated -->
+  <div class="persona-section" id="personaSection">
+    <button class="persona-close" onclick="closePersona()" aria-label="Close">×</button>
+    <div class="persona-content">
+      <span class="persona-title">What best describes you?</span>
+      <div class="persona-buttons">
+        <button class="persona-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+          </svg>
+          Solopreneur / Creator
+        </button>
+        <button class="persona-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="7" r="3"/>
+            <circle cx="15" cy="7" r="3"/>
+            <path d="M3 18c0-3 3-5 6-5"/>
+            <path d="M15 13c3 0 6 2 6 5"/>
+          </svg>
+          Business / Team
+        </button>
+        <button class="persona-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="6" r="2"/>
+            <circle cx="18" cy="6" r="2"/>
+            <circle cx="6" cy="18" r="2"/>
+            <circle cx="18" cy="18" r="2"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          SMM Agency
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">Smarter<span>Queue</span></div>
+      <nav class="nav">
+        <a href="#">Social Platforms</a>
+        <a href="#">Features</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <button class="btn-login">Login</button>
+      <button class="btn-trial">Start Free Trial</button>
+      <button class="menu-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-left">
+      <h1 class="hero-title">Is your social media easy to manage?</h1>
+      <p class="hero-description">
+        SmarterQueue is the smartest all-in-one social media management tool for savvy marketers, influencers, entrepreneurs, and businesses
+      </p>
+      <div class="hero-buttons">
+        <button class="btn-cta">
+          Start Free Trial
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+        <button class="btn-video">
+          <span class="play-icon">
+            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+          </span>
+          See how it works
+        </button>
+      </div>
+      <div class="trust-badges">
+        <span class="trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          No card required
+        </span>
+        <span class="trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Cancel Anytime
+        </span>
+        <span class="trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Free Onboarding Call
+        </span>
+      </div>
+      <div class="social-icons">
+        <span class="social-icon facebook">f</span>
+        <span class="social-icon instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="white" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/>
+            <circle cx="18" cy="6" r="1.5" fill="white"/>
+          </svg>
+        </span>
+        <span class="social-icon twitter">𝕏</span>
+        <span class="social-icon linkedin">in</span>
+        <span class="social-icon pinterest">P</span>
+        <span class="social-icon tiktok">♪</span>
+        <span class="social-icon google">G</span>
+        <span class="social-icon youtube">▶</span>
+        <span class="social-icon threads">@</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="calendar-mockup">
+        <div class="calendar-header">
+          <div class="calendar-day">MON</div>
+          <div class="calendar-day">TUE</div>
+          <div class="calendar-day">WED</div>
+          <div class="calendar-day">THU</div>
+        </div>
+        <div class="calendar-grid">
+          <!-- Row 1 -->
+          <div class="calendar-cell">
+            <div class="calendar-placeholder"></div>
+          </div>
+          <div class="calendar-cell">
+            <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=200&h=200&fit=crop" class="calendar-image" alt="">
+          </div>
+          <div class="calendar-cell">
+            <div class="calendar-placeholder"></div>
+          </div>
+          <div class="calendar-cell">
+            <img src="https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=200&h=200&fit=crop" class="calendar-image" alt="">
+          </div>
+
+          <!-- Row 2 -->
+          <div class="calendar-cell">
+            <img src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=200&h=200&fit=crop" class="calendar-image" alt="">
+          </div>
+          <div class="calendar-cell">
+            <div class="calendar-placeholder"></div>
+          </div>
+          <div class="calendar-cell">
+            <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=200&h=200&fit=crop" class="calendar-image" alt="">
+          </div>
+          <div class="calendar-cell">
+            <div class="calendar-placeholder"></div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="calendar-cell">
+            <img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=200&h=200&fit=crop" class="calendar-image" alt="">
+          </div>
+          <div class="calendar-cell">
+            <div class="calendar-placeholder"></div>
+          </div>
+          <div class="calendar-cell">
+            <div class="calendar-placeholder"></div>
+          </div>
+          <div class="calendar-cell">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop" class="calendar-image" alt="">
+          </div>
+        </div>
+
+        <!-- Comment Bubbles -->
+        <div class="comment-bubble green bubble-1">
+          <div class="comment-avatar"></div>
+          <span>Jessica</span>
+          <span>Feels on-brand?</span>
+        </div>
+        <div class="comment-bubble blue bubble-2">
+          <div class="comment-avatar"></div>
+          <span>John</span>
+          <span>Nailed it</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Animate the persona section after page load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('personaSection').classList.add('visible');
+      }, 500);
+    });
+
+    // Close persona section
+    function closePersona() {
+      const section = document.getElementById('personaSection');
+      section.classList.remove('visible');
+      section.classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
